@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รพ.ลำปาง — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07101f;
+  --surface: #0d1b2e;
+  --card: #0f2035;
+  --border: #1a3350;
+  --a1: #00d4ff;
+  --a2: #3dffa0;
+  --a3: #ffb830;
+  --a4: #ff6eb4;
+  --a5: #b48fff;
+  --text: #ddeeff;
+  --muted: #4a6a88;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Sarabun',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% 0%,rgba(0,212,255,.06) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 85% 100%,rgba(180,143,255,.05) 0%,transparent 60%);pointer-events:none}
+.wrap{position:relative;max-width:1200px;margin:0 auto;padding:32px 24px 56px}
+
+/* HEADER */
+header{display:flex;align-items:center;gap:18px;margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--border)}
+.hbadge{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#0ea5e9,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 28px rgba(124,58,237,.35);flex-shrink:0}
+header h1{font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.02em}
+header p{font-size:13px;color:var(--muted);margin-top:3px}
+.ptag{margin-left:auto;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--a1);font-family:'Chakra Petch',sans-serif;font-size:11px;padding:6px 14px;border-radius:20px;white-space:nowrap}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 18px;position:relative;overflow:hidden;transition:transform .2s}
+.kpi:hover{transform:translateY(-3px)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+.kpi.k1::before{background:linear-gradient(90deg,#00d4ff,#0ea5e9)}
+.kpi.k2::before{background:linear-gradient(90deg,#3dffa0,#10b981)}
+.kpi.k3::before{background:linear-gradient(90deg,#ffb830,#ef4444)}
+.kpi.k4::before{background:linear-gradient(90deg,#b48fff,#ff6eb4)}
+.klabel{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.kval{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;color:#fff}
+.ksub{font-size:11px;color:var(--muted);margin-top:5px}
+
+/* SECTION */
+.slabel{font-family:'Chakra Petch',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--a1);margin-bottom:12px;opacity:.8}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.grid-3{display:grid;grid-template-columns:1.6fr 1fr;gap:18px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px}
+.ctitle{font-family:'Chakra Petch',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:6px}
+.ctitle span{color:var(--a1)}
+
+/* BARS */
+.bar-list{display:flex;flex-direction:column;gap:11px}
+.bname{font-size:12.5px;color:var(--text)}
+.bmeta{display:flex;justify-content:space-between;margin-bottom:5px}
+.bamt{font-family:'Chakra Petch',sans-serif;font-size:11px;color:var(--muted)}
+.btrack{height:7px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden}
+.bfill{height:100%;border-radius:4px;animation:grow 1.1s cubic-bezier(.4,0,.2,1) both;animation-delay:var(--d,0s)}
+@keyframes grow{from{width:0!important}}
+
+/* RANK LIST */
+.rank-list{display:flex;flex-direction:column;gap:7px}
+.ritem{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.025);border-radius:10px;border:1px solid rgba(255,255,255,.04);transition:background .2s}
+.ritem:hover{background:rgba(255,255,255,.055)}
+.rnum{font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:700;color:var(--muted);width:24px;text-align:center;flex-shrink:0}
+.rnum.top{color:var(--a3)}
+.rinfo{flex:1;min-width:0}
+.rcname{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rcnt{font-size:11px;color:var(--muted)}
+.ramt{font-family:'Chakra Petch',sans-serif;font-size:12.5px;font-weight:600;color:var(--a2);white-space:nowrap}
+
+/* WARD CELLS */
+.ward-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.wcell{border-radius:10px;padding:12px;transition:transform .2s;cursor:default}
+.wcell:hover{transform:scale(1.04)}
+.wname{font-size:11.5px;font-weight:600;color:#fff;margin-bottom:3px;line-height:1.3}
+.wcnt{font-family:'Chakra Petch',sans-serif;font-size:18px;font-weight:700;color:#fff}
+.wamt{font-size:10.5px;color:rgba(255,255,255,.6);margin-top:2px}
+
+footer{margin-top:36px;padding-top:18px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:var(--muted)}
+
+@media(max-width:860px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .ward-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="hbadge">🏥</div>
+  <div>
+    <h1>โรงพยาบาลลำปาง — Dashboard บริการทางการแพทย์</h1>
+    <p>สถิติค่าบริการ: Lab · OPD · IPD</p>
+  </div>
+  <div class="ptag">ต.ค. 2568 – เม.ย. 2569</div>
+</header>
+
+<!-- KPI -->
+<div class="kpi-row">
+  <div class="kpi k1">
+    <div class="klabel">Top Lab (จำนวนสูงสุด)</div>
+    <div class="kval">182,601</div>
+    <div class="ksub">Creatinine + eGFR</div>
+  </div>
+  <div class="kpi k2">
+    <div class="klabel">มูลค่าแล็บรวม Top 10</div>
+    <div class="kval">71.7M</div>
+    <div class="ksub">บาท</div>
+  </div>
+  <div class="kpi k3">
+    <div class="klabel">OPD สูงสุด</div>
+    <div class="kval">61,637</div>
+    <div class="ksub">รพสต. — 8.91M ฿</div>
+  </div>
+  <div class="kpi k4">
+    <div class="klabel">IPD สูงสุด</div>
+    <div class="kval">16,835</div>
+    <div class="ksub">อญ.1 — 2.26M ฿</div>
+  </div>
+</div>
+
+<!-- LAB SECTION -->
+<div class="slabel">▸ Lab — Top 10 รายการตรวจ</div>
+<div class="grid-3" style="margin-bottom:26px">
+  <div class="card">
+    <div class="ctitle"><span>■</span> มูลค่าที่เรียกเก็บ (บาท)</div>
+    <div class="bar-list" id="labBars"></div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><span>■</span> จำนวนการสั่ง (ครั้ง)</div>
+    <div class="bar-list" id="labCount"></div>
+  </div>
+</div>
+
+<!-- OPD + IPD -->
+<div class="slabel">▸ OPD & IPD</div>
+<div class="grid-2">
+  <div class="card">
+    <div class="ctitle"><span>◆</span> OPD — Top 6 คลินิก</div>
+    <div class="rank-list" id="opdList"></div>
+  </div>
+  <div class="card">
+    <div class="ctitle"><span>◆</span> IPD — หอผู้ป่วย Top 6</div>
+    <div class="ward-grid" id="wardGrid"></div>
+  </div>
+</div>
+
+<footer>รพ.ลำปาง · ข้อมูลช่วง ตุลาคม 2568 – เมษายน 2569 · Dashboard Analytics</footer>
+</div>
+
+<script>
+const C=['#00d4ff','#3dffa0','#ffb830','#ff6eb4','#b48fff','#38bdf8','#fb923c','#34d399','#e879f9','#fbbf24'];
+
+const lab=[
+  {n:'Creatinine + eGFR', cnt:182601, amt:7304280},
+  {n:'Electrolyte',        cnt:169173, amt:16917940},
+  {n:'BUN',                cnt:167675, amt:6707160},
+  {n:'CBC',                cnt:147781, amt:13330356},
+  {n:'FBS',                cnt:78662,  amt:3146495},
+  {n:'UA',                 cnt:70799,  amt:4247736},
+  {n:'LDL-direct',         cnt:70506,  amt:10554018},
+  {n:'SGPT(ALT)',           cnt:68573,  amt:2742960},
+  {n:'SGOT(AST)',           cnt:67124,  amt:2684960},
+  {n:'Triglyceride',        cnt:66823,  amt:4009440},
+];
+
+const opd=[
+  {n:'รพสต.',                      cnt:61637, amt:8911800},
+  {n:'อายุรกรรมทั่วไป',            cnt:47589, amt:7293910},
+  {n:'ER',                         cnt:24505, amt:3512400},
+  {n:'โรคเรื้อรังหัวเวียงนอกเขต', cnt:21020, amt:3135860},
+  {n:'นอกเวลา',                    cnt:14094, amt:2010540},
+  {n:'ศสม.หัวเวียง นอกเขต',       cnt:11569, amt:1620510},
+];
+
+const ipd=[
+  {n:'อญ 1',     cnt:16835, amt:2264660},
+  {n:'อญ 2',     cnt:16787, amt:2274960},
+  {n:'อช 1',     cnt:15505, amt:2134790},
+  {n:'อช 2',     cnt:14840, amt:2039910},
+  {n:'อช 3',     cnt:14075, amt:1972930},
+  {n:'ศัลย์ Uro', cnt:9972, amt:1204890},
+];
+
+function fmt(n){if(n>=1e6)return(n/1e6).toFixed(2)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n}
+function fmtN(n){return n.toLocaleString('th-TH')}
+
+// LAB AMOUNT BARS
+const maxAmt=Math.max(...lab.map(d=>d.amt));
+const labByAmt=[...lab].sort((a,b)=>b.amt-a.amt);
+labByAmt.forEach((d,i)=>{
+  const pct=(d.amt/maxAmt*100).toFixed(1);
+  document.getElementById('labBars').innerHTML+=`
+    <div>
+      <div class="bmeta"><span class="bname">${d.n}</span><span class="bamt">${fmt(d.amt)} ฿</span></div>
+      <div class="btrack"><div class="bfill" style="width:${pct}%;background:linear-gradient(90deg,${C[i]},${C[i]}66);--d:${i*.07}s"></div></div>
+    </div>`;
+});
+
+// LAB COUNT BARS
+const maxCnt=Math.max(...lab.map(d=>d.cnt));
+const labByCnt=[...lab].sort((a,b)=>b.cnt-a.cnt);
+labByCnt.forEach((d,i)=>{
+  const pct=(d.cnt/maxCnt*100).toFixed(1);
+  document.getElementById('labCount').innerHTML+=`
+    <div>
+      <div class="bmeta"><span class="bname">${d.n}</span><span class="bamt">${fmtN(d.cnt)}</span></div>
+      <div class="btrack"><div class="bfill" style="width:${pct}%;background:linear-gradient(90deg,${C[i]},${C[i]}66);--d:${i*.07}s"></div></div>
+    </div>`;
+});
+
+// OPD
+opd.forEach((d,i)=>{
+  document.getElementById('opdList').innerHTML+=`
+    <div class="ritem">
+      <div class="rnum ${i<3?'top':''}">${i+1}</div>
+      <div class="rinfo">
+        <div class="rcname">${d.n}</div>
+        <div class="rcnt">${fmtN(d.cnt)} ครั้ง</div>
+      </div>
+      <div class="ramt">${fmt(d.amt)} ฿</div>
+    </div>`;
+});
+
+// IPD WARD
+const colors=['#1d4ed8','#1e40af','#1d4ed8','#15803d','#166534','#7e22ce'];
+const intensities=[1,.97,.92,.86,.82,.65];
+ipd.forEach((d,i)=>{
+  const h=[220,215,220,140,145,270][i];
+  const l=Math.round(22+intensities[i]*14);
+  document.getElementById('wardGrid').innerHTML+=`
+    <div class="wcell" style="background:hsl(${h},60%,${l}%)">
+      <div class="wname">${d.n}</div>
+      <div class="wcnt">${fmtN(d.cnt)}</div>
+      <div class="wamt">${fmt(d.amt)} ฿</div>
+    </div>`;
+});
+</script>
+</body>
+</html>
